@@ -145,3 +145,12 @@ int main()
 	results(ending, test_c);
 	return 0;
 }
+
+
+
+
+
+
+
+
+
