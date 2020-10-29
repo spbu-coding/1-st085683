@@ -1,9 +1,6 @@
 #include <math.h>
 #include <stdlib.h>
 #include <stdio.h>
-
-#define M_PI 3.1415926535897
-#endif
 #define err(...) (fprintf(stderr, __VA_ARGS__))
 #define MAX_RESULT 32
 
@@ -13,7 +10,7 @@ struct interval_x {
 };
 double rectangle_method(double left_b, double right_b)
 {
-	return (right_b - left_b) * sin((left_b + right_b) / 2);
+	return (right_b - left_b) *sin((left_b + right_b) / 2);
 }
 double simpson_rule(double left_b, double right_b)
 {
@@ -36,7 +33,7 @@ double integration(struct interval_x int_val, int part, double (*rule)(double, d
 	return integr;
 }
 
-void deallocation_of_memory(char** argc, int count)
+void deallocation_of_memory(char **argc, int count)
 {
 	for (int a = 0; a < count; ++a)
 	{
@@ -91,9 +88,9 @@ int read_int(struct interval_x* int_val)
 	return 0;
 }
 
-char** calculation_of_integration(struct interval_x int_val, int* part, int test_c)
+char **calculation_of_integration(struct interval_x int_val, int* part, int test_c)
 {
-	void ** ptr = (char**)malloc(sizeof(char*) * test_c);
+	char **ptr = (char**)malloc(sizeof(char*) * test_c);
 	if (!ptr) return 0;
 
 	for (int a ; a < test_c; a++)
@@ -113,7 +110,7 @@ char** calculation_of_integration(struct interval_x int_val, int* part, int test
 		{
 			deallocation_of_memory(ptr, a + 1);
 			err("Cannot allocate memory for result string in %d experiment\n\n", a);
-			return 0;
+			return NULL;
 		}
 	}
 
@@ -143,12 +140,6 @@ int main()
 
 	deallocation_of_memory(arg_c, test_c);
 	return 0;
+
 }
-
-
-
-
-
-
-
 
