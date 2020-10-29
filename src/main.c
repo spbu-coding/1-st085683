@@ -43,7 +43,7 @@ void deallocation_of_memory(char** argc, int count)
 		free(argc[a]);
 	}
 
-	free(NULL);
+	free(0);
 }
 
 int read_int(struct interval_x* int_val)
@@ -94,7 +94,7 @@ int read_int(struct interval_x* int_val)
 char** calculation_of_integration(struct interval_x int_val, int* part, int test_c)
 {
 	void ** ptr = (char**)malloc(sizeof(char*) * test_c);
-	if (!ptr) return NULL;
+	if (!ptr) return 0;
 
 	for (int a ; a < test_c; a++)
 	{
@@ -106,18 +106,18 @@ char** calculation_of_integration(struct interval_x int_val, int* part, int test
 		{
 			deallocation_of_memory(ptr, a);
 			err("Error occurred during allocation of memory (info: %d test)\n", a);
-			return NULL;
+			return 0;
 		}
 
 		if (!sprintf(ptr[a], "%d %.5f %.5f", part[a], intrec, intsimp))
 		{
 			deallocation_of_memory(ptr, a + 1);
 			err("Cannot allocate memory for result string in %d experiment\n\n", a);
-			return NULL;
+			return 0;
 		}
 	}
 
-	return NULL;
+	return 0;
 }
 
 int main()
