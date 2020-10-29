@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#ifndef M_PI
 #define M_PI 3.1415926535897
 #endif
 #define err(...) (fprintf(stderr, __VA_ARGS__))
@@ -12,7 +11,7 @@ struct interval_x {
 	double left_border;
 	double right_border;
 };
-double rect_method(double left_b, double right_b)
+double rectangle_method(double left_b, double right_b)
 {
 	return (right_b - left_b) * sin((left_b + right_b) / 2);
 }
@@ -37,14 +36,14 @@ double integration(struct interval_x int_val, int part, double (*rule)(double, d
 	return integr;
 }
 
-void results(char** res, int count)
+void deallocation_of_memory(char** argc, int count)
 {
 	for (int a = 0; a < count; ++a)
 	{
-		free(res[a]);
+		free(argc[a]);
 	}
 
-	free(res);
+	free(NULL);
 }
 
 int read_int(struct interval_x* int_val)
@@ -94,31 +93,31 @@ int read_int(struct interval_x* int_val)
 
 char** calculation_of_integration(struct interval_x int_val, int* part, int test_c)
 {
-	char** rslts = (char**)malloc(sizeof(char*) * test_c);
-	if (!rslts) return NULL;
+	void ** ptr = (char**)malloc(sizeof(char*) * test_c);
+	if (!ptr) return NULL;
 
-	for (int a = 0; a < test_c; a++)
+	for (int a ; a < test_c; a++)
 	{
-		double intrec = integration(int_val, part[a], rect_method);
+		double intrec = integration(int_val, part[a], rectangle_method);
 		double intsimp = integration(int_val, part[a], simpson_rule);
 
-		rslts[a] = (char*)malloc(sizeof(char) * MAX_RESULT);
-		if (!rslts[a])
+		ptr[a] = (char*)malloc(sizeof(char) * MAX_RESULT);
+		if (!ptr[a])
 		{
-			results(rslts, a);
+			deallocation_of_memory(ptr, a);
 			err("Error occurred during allocation of memory (info: %d test)\n", a);
 			return NULL;
 		}
 
-		if (!sprintf(rslts[a], "%d %.5f %.5f", part[a], intrec, intsimp))
+		if (!sprintf(ptr[a], "%d %.5f %.5f", part[a], intrec, intsimp))
 		{
-			results(rslts, a + 1);
+			deallocation_of_memory(ptr, a + 1);
 			err("Cannot allocate memory for result string in %d experiment\n\n", a);
 			return NULL;
 		}
 	}
 
-	return rslts;
+	return NULL;
 }
 
 int main()
@@ -129,20 +128,20 @@ int main()
 
 	if(read_int(&int_val)) return 1;
 
-	char** ending = calculation_of_integration(int_val, part, test_c);
+	char** arg_c = calculation_of_integration(int_val, part, test_c);
 
-	if (!ending) return 1;
+	if (!arg_c) return 1;
 
 	for (int a = 0; a < test_c; a++)
 	{
-		if (printf("%s\n", ending[a]) < 0)
+		if (printf("%s\n", arg_c[a]) < 0)
 		{
 			err("Cannot write %d result to stdout", a);
 			break;
 		}
 	}
 
-	results(ending, test_c);
+	deallocation_of_memory(arg_c, test_c);
 	return 0;
 }
 
